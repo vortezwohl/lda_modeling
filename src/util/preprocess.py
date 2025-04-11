@@ -11,6 +11,7 @@ def split_words(text: str, stopwords: list) -> list:
     seg_list = jieba.cut(text, cut_all=False)
     seg_list = [w for w in seg_list if w not in stopwords and len(w) > 1]
     seg_list = [w for w in seg_list if '_' not in w]
+    seg_list = [w for w in seg_list if not w.isnumeric()]
     return seg_list
 
 
