@@ -9,7 +9,9 @@ def split_words(text: str, stopwords: list) -> list:
     for w in stopwords:
         text = text.replace(w, '_')
     seg_list = jieba.cut(text, cut_all=False)
-    return [w for w in seg_list if w not in stopwords and len(w) > 1]
+    seg_list = [w for w in seg_list if w not in stopwords and len(w) > 1]
+    seg_list = [w for w in seg_list if '_' not in w]
+    return seg_list
 
 
 def extract_names(text: str) -> list:
