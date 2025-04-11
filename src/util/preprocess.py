@@ -13,4 +13,6 @@ def split_words(text: str, stopwords: list) -> list:
 
 
 def extract_names(text: str) -> list:
-    return [x.text for x in ner_model(text).ents if x.label_ in ['PERSON']]
+    names = [x.text for x in ner_model(text).ents if x.label_ in ['PERSON']]
+    print(names)
+    return names
