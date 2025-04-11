@@ -9,6 +9,8 @@ dependencies = [
     "gensim>=4.3.3",
     "jieba>=0.42.1",
     "jupyter>=1.1.1",
+    "pip>=25.0.1",
     "pyldavis>=3.4.1",
     "scikit-learn>=1.6.1",
+    "spacy>=3.8.5",
 ]
