@@ -13,9 +13,10 @@ llm = 'qwen-plus'
 
 def split_words(text: str, stopwords: list) -> list:
     known_names = ner(text)
-    stopwords.extend(known_names)
     for w in stopwords:
         text = text.replace(w, '_')
+    for n in known_names:
+        text = text.replace(n, '_')
     seg_list = jieba.cut(text, cut_all=False)
     return [w for w in seg_list if len(w) > 1 and '_' not in w and not w.isnumeric()]
 
@@ -38,7 +39,7 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
         '提示': '1. 某些人名如"澄映", "舒念", "语歌"等较为拗口甚至和常用词谐音. 请注意: 通常没有实际意义的词汇很可能就是人名, 请你多加注意.\n'
                 '2. 对于一些较为拗口的人名, 请你根据上下文确定其性质, 通常人名会和动词介词相关联. 请不要漏过任何一个的人名!',
         '限制': '对于 "陈姨", "铭宝", "吴总" 这样的称谓, 你只需要提取 "陈", "铭", "吴" 即可, 不需要涉及通用称谓. 对于 "陈家", "谢家" 则提取其家族姓氏 "陈", "谢".\n'
-                '对于"国王", "皇后", "总裁"等称谓, 它们并不是人名, 不需要提取.',
+                '对于"国王", "皇后", "总裁", "妻子", "丈夫", "警察", "中年妇女"等社会概念, 它们并不是人名, 不需要提取.',
     }
     while True:
         try:
@@ -58,6 +59,8 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
             ...
         except openai.InternalServerError:
             ...
+        except openai.AuthenticationError:
+            print('Authentication error')
 
 
 def ner(text: str) -> list:
