@@ -2,7 +2,6 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 
 import jieba
-import spacy
 import openai
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -10,7 +9,6 @@ from dotenv import load_dotenv
 load_dotenv()
 openai_client = OpenAI(base_url='https://chatnio.cdreader.vip/v1', max_retries=1024, timeout=1600)
 llm = 'qwen-plus'
-ner_model = spacy.load("zh_core_web_sm")
 
 
 def split_words(text: str, stopwords: list) -> list:
@@ -20,12 +18,6 @@ def split_words(text: str, stopwords: list) -> list:
         text = text.replace(w, '_')
     seg_list = jieba.cut(text, cut_all=False)
     return [w for w in seg_list if len(w) > 1 and '_' not in w and not w.isnumeric()]
-
-
-def spacy_based_ner(text: str) -> list:
-    names = [x.text for x in ner_model(text).ents if x.label_ in ['PERSON']]
-    print('SpaCy NER:', names)
-    return names
 
 
 def llm_based_ner(text: str) -> list:
