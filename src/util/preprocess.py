@@ -20,7 +20,7 @@ def split_words(text: str, stopwords: list) -> list:
     return [w for w in seg_list if len(w) > 1 and '_' not in w and not w.isnumeric()]
 
 
-def llm_based_ner(text: str, field: str) -> list:
+def llm_based_ner(text: str, field: str = '网文') -> list:
     text = text[:20000]
     role = '命名实体识别算法'
     output_restraint = '你的输出只能在同一行, JSONL格式, 请确保 JSONL 的格式合法.'
@@ -34,7 +34,7 @@ def llm_based_ner(text: str, field: str) -> list:
     prompt = {
         '文段': text,
         '系统指令设定': system_prompt,
-        '任务目标': '请你仔细阅读[文段], 找出文段中所提及的所有命名实体的**姓名**和**家族名**, 仅找出**姓名**和**家族名**, 不涉及**称谓**. 包括主角, 配角.',
+        '任务目标': '请你仔细阅读[文段], 找出文段中所提及的所有**人类命名实体**的**姓名**和**家族名**, 仅找出**姓名**和**家族名**, 不涉及**称谓**. 包括主角, 配角.',
         '限制': '对于 "陈姨", "铭宝", "吴总" 这样的称谓, 你只需要提取 "陈", "铭", "吴" 即可, 不需要涉及通用称谓. 对于 "陈家", "谢家" 则提取其家族姓氏 "陈", "谢".',
     }
     while True:
