@@ -34,6 +34,7 @@ def llm_invoke(user_prompt: dict, system_prompt: dict) -> list:
 
 
 def check(names: list):
+    names = [x for x in names if len(x) > 1]
     text = str(names)
     role = '通用社会概念识别算法'
     output_restraint = '你的输出只能在同一行, JSONL格式, 请确保 JSONL 的格式合法.'
@@ -46,7 +47,7 @@ def check(names: list):
     prompt = {
         '花名册': text,
         '系统指令设定': system_prompt,
-        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的**所有通用社会概念**, 对于所有词汇, 如果该词汇不是一个**具体的人名/姓名**, 那么它就是一个通用社会概念.',
+        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的**所有通用社会概念**, 例如职业(老板总裁秘书助理...等所有职业名称), 身份(丈夫妻子老公老婆...等所有通用身份概念), 称谓(爸爸妈妈爷爷奶奶姐姐妹妹哥哥弟弟...等所有称谓)',
         '限制': '不要提取人名'
     }
     non_names = llm_invoke(prompt, system_prompt)
