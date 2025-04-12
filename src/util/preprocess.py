@@ -46,7 +46,7 @@ def check(names: list):
     prompt = {
         '花名册': text,
         '系统指令设定': system_prompt,
-        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的**所有通用社会概念**, 对于所有词汇, 如果该词汇不是一个**人名**, **地名**, **机构名**等名称, 那么它就是一个通用社会概念.',
+        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的**所有通用社会概念**, 对于所有词汇, 如果该词汇不是一个**具体的人名/姓名**, 那么它就是一个通用社会概念.',
         '限制': '不要提取人名'
     }
     non_names = llm_invoke(prompt, system_prompt)
@@ -78,8 +78,9 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
                 '对于"国王", "皇后", "总裁", "妻子", "丈夫", "警察", "中年妇女"等社会概念, 它们并不是人名, 不需要提取.',
     }
     names = llm_invoke(prompt, system_prompt)
+    names = check(names)
     print('Names Found:', names)
-    return check(names)
+    return names
 
 
 def ner(text: str) -> list:
