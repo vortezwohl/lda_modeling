@@ -33,7 +33,7 @@ known_names = [
 
 
 def split_words(text: str, stopwords: list) -> list:
-    stopwords.extend(extract_names(text))
+    known_names.extend(extract_names(text))
     for w in stopwords:
         text = text.replace(w, '_')
     seg_list = jieba.cut(text, cut_all=False)
