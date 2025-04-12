@@ -1119,7 +1119,7 @@ requires-dist = [
     { name = "gensim", specifier = ">=4.3.3" },
     { name = "jieba", specifier = ">=0.42.1" },
     { name = "jupyter", specifier = ">=1.1.1" },
-    { name = "numpy", specifier = "~=1.26.4" },
+    { name = "numpy", specifier = ">=1.18.5" },
     { name = "pip", specifier = ">=25.0.1" },
     { name = "pydantic", specifier = "~=1.10.2" },
     { name = "pyldavis", specifier = ">=3.4.1" },
