@@ -47,7 +47,7 @@ def check(names: list):
     prompt = {
         '花名册': text,
         '系统指令设定': system_prompt,
-        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的**所有通用社会概念**, 例如职业(老板总裁秘书助理...等所有职业名称), 身份(丈夫妻子老公老婆...等所有通用身份概念), 称谓(爸爸妈妈爷爷奶奶姐姐妹妹哥哥弟弟...等所有称谓)',
+        '任务目标': '请你仔细逐一检查[花名册], 找出文段中所提及的所有**通用社会概念**, 例如职业(老板总裁秘书助理...等所有职业名称), 身份(丈夫妻子老公老婆...等所有通用身份概念), 称谓(爸爸妈妈爷爷奶奶姐姐妹妹哥哥弟弟...等所有称谓)',
         '限制': '不要提取人名'
     }
     non_names = llm_invoke(prompt, system_prompt)
@@ -86,7 +86,7 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
 
 def ner(text: str) -> list:
     names = []
-    chunk_size = 3600
+    chunk_size = 1600
     _split = int(len(text) / chunk_size) + 1
     print('Split:', _split)
     _inputs = []
