@@ -35,7 +35,8 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
         '文段': text,
         '系统指令设定': system_prompt,
         '任务目标': '请你仔细阅读[文段], 找出文段中所提及的所有**人类命名实体**的**姓名**和**家族名**, 仅找出**姓名**和**家族名**, 不涉及**称谓**. 包括主角, 配角.',
-        '提示': '某些人名如"澄映", "舒念", "语歌"等较为拗口, 但通常没有实际意义的词汇很可能就是人名, 请你多加注意.',
+        '提示': '1. 某些人名如"澄映", "舒念", "语歌"等较为拗口甚至和常用词谐音. 请注意: 通常没有实际意义的词汇很可能就是人名, 请你多加注意.\n'
+                '2. 对于一些较为拗口的人名, 请你根据上下文确定其性质, 不要漏过一个潜在的人名!',
         '限制': '对于 "陈姨", "铭宝", "吴总" 这样的称谓, 你只需要提取 "陈", "铭", "吴" 即可, 不需要涉及通用称谓. 对于 "陈家", "谢家" 则提取其家族姓氏 "陈", "谢".',
     }
     while True:
@@ -60,11 +61,12 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
 
 def ner(text: str) -> list:
     names = []
-    _split = int(len(text) / 5000)
+    chunk_size = 3600
+    _split = int(len(text) / chunk_size) + 1
     print('Split:', _split)
     _inputs = []
     for i in range(_split):
-        _inputs.append(text[i*5000:(i+1)*5000])
+        _inputs.append(text[i*chunk_size:(i+1)*chunk_size])
     with ThreadPoolExecutor(max_workers=_split) as executor:
         tmp_names = list(executor.map(llm_based_ner, _inputs))
     for _names in tmp_names:
