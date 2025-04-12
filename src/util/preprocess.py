@@ -35,7 +35,7 @@ def llm_based_ner(text: str) -> list:
     system_prompt = {
         '你是': role,
         '输出数据格式': 'JSONL',
-        '输出示例': ['小王', '小美', '杰克', '丽丽'],
+        '输出示例': ['小王', '小美', '杰克', '丽丽', '汇丰集团', '百度公司', '纽约市'],
         '输出格式限制': output_restraint
     }
     prompt = {
